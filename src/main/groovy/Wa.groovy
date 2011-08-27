@@ -9,14 +9,14 @@ class Wa {
 
 		def proxy = new Proxy(target: target)
 		methods.each {method ->
-			proxy.metaClass."は${method.name}" = {->
-				proxy._call(method)
-			}
-			proxy.metaClass."を${method.name}" = {->
-				proxy._call(method)
-			}
-			proxy.metaClass."getを${method.name}" = {->
-				proxy._call(method)
+			proxy.postpositions.each {pp ->
+				def name = method.name
+				proxy.metaClass."$pp$name" = {->
+					proxy._call(name)
+				}
+				proxy.metaClass."get$pp$name" = {->
+					proxy._call(name)
+				}
 			}
 		}
 
@@ -25,6 +25,9 @@ class Wa {
 }
 
 class Proxy {
+
+	def postpositions = 'は が の を に と から で や か まで だけ など も しか'.split(/\s/)
+
 	def target
 	def arguments = []
 
@@ -32,14 +35,14 @@ class Proxy {
 	def に(arg) { arguments << arg; this }
 	def getを() { this }
 
-	def _call(method) {
-		method.invoke(target, *arguments)
+	def _call(String method) {
+		target."$method"(*arguments)
+		arguments.clear()
 	}
 
 	@Override
 	def propertyMissing(String name) {
 		def method = metaClass.methods.find{ it.name == name }
-		if ( ! method) method = metaClass.methods.find { it.name ==~ /を$name/ }
 
 		method ? method.invoke() : super.propertyMissing(name)
 	}
