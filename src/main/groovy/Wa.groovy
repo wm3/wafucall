@@ -29,6 +29,7 @@ class Proxy {
 	def arguments = []
 
 	def が(arg) { arguments << arg; this }
+	def に(arg) { arguments << arg; this }
 	def getを() { this }
 
 	def _call(method) {
