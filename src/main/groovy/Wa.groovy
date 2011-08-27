@@ -31,19 +31,34 @@ class Proxy {
 	def target
 	def arguments = []
 
-	def が(arg) { arguments << arg; this }
-	def に(arg) { arguments << arg; this }
-	def getを() { this }
+	def _pushArg(arg) { arguments << arg; this }
 
 	def _call(String method) {
 		target."$method"(*arguments)
 		arguments.clear()
 	}
 
+	def findPostpositionMethod(String method) {
+		if (method in postpositions) {
+			this.&_pushArg
+		} else {
+			null
+		}
+	}
+
+	@Override
+	def methodMissing(String name, args) {
+		def method = findPostpositionMethod(name)
+		if (method) return method(*args)
+
+		throw new MissingMethodException(name, this.getClass(), args)
+	}
+
 	@Override
 	def propertyMissing(String name) {
 		def method = metaClass.methods.find{ it.name == name }
+		if (method) return method.invoke()
 
-		method ? method.invoke() : super.propertyMissing(name)
+		throw new MissingPropertyException(name)
 	}
 }
