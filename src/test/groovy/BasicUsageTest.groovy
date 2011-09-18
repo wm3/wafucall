@@ -3,59 +3,59 @@ import spock.lang.*
 import jp.w3ch.wa.Wa
 
 class BasicUsageTest extends Specification {
-	static interface Hungry {
-		def 食べる(食べ物)
-		def もらう(人, 食べ物)
-		def 我慢する()
+	static interface Ninja {
+		def 隠れる()
+		def 投げる(道具)
+		def 忘れる(道具, 場所)
 	}
 
-	def apple = new Object()
-	def someone = new Object()
-	def you = Mock(Hungry.class)
+	def shuriken = new Object()
+	def home = new Object()
+	def ninja = Mock(Ninja)
 
-	def あなた = Wa.japanese(you)
+	def 忍者 = Wa.japanese(ninja)
 
 	def "call a zero argument method"() {
 
-		when: あなた.は我慢する()
+		when: 忍者.は隠れる()
 
-		then: 1 * you.我慢する()
+		then: 1 * ninja.隠れる()
 	}
 
 	def "call a single argument method"() {
 
-		when: あなた.が(apple).を食べる()
+		when: 忍者.は(shuriken).を投げる()
 
-		then: 1 * you.食べる(apple)
+		then: 1 * ninja.投げる(shuriken)
 	}
 
 	def "call a single argument method with few symbols"() {
 
-		when: あなた.が apple を食べる()
+		when: 忍者.は shuriken を投げる()
 
-		then: 1 * you.食べる(apple)
+		then: 1 * ninja.投げる(shuriken)
 	}
 
 	@Ignore
 	def "call a single argument method with no symbols"() {
 
-		when: あなた.が apple を食べる
+		when: 忍者.は shuriken を投げる
 
-		then: 1 * you.食べる(apple)
+		then: 1 * ninja.投げる(shuriken)
 	}
 
 	def "call a two argument method"() {
 
-		when: あなた.が(someone).に(apple).をもらう()
+		when: 忍者.も(shuriken).を(home)に忘れる()
 
-		then: 1 * you.もらう(someone, apple)
+		then: 1 * ninja.忘れる(shuriken, home)
 	}
 
 	def "call a two argument method with few symbols"() {
 
-		when: あなた.が someone に apple をもらう()
+		when: 忍者.も shuriken を home に忘れる()
 
-		then: 1 * you.もらう(someone, apple)
+		then: 1 * ninja.忘れる(shuriken, home)
 	}
 
 	@Ignore
@@ -72,6 +72,6 @@ class BasicUsageTest extends Specification {
 	@Ignore
 	def "call a procedure object "() {
 		x.run(t)
-		 t.が(x).する()
+		t.が(x).する()
 	}
 }
