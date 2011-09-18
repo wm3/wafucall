@@ -4,19 +4,17 @@
 
 ```groovy
 // 日本語の名前でメソッドを定義
-class Hungry {
-	def もらう(from, food) { "$food ムシャムシャ" }
+class Ninja {
+	def 忘れる(tool, place) { "不覚! $tool を $place に忘れたでござる" }
 }
 
-def apple = "リンゴ"
-def someone = new Object()
-def you = new Hungry()
 
+def ninja = Mock(Ninja)
 
 // ターゲットに日本語風呼び出しをサポートを追加する
-def あなた = Wa.japanese(you)
+def 忍者 = Wa.japanese(ninja)
 
 
 // メソッド呼び出し
-あなた.が someone に apple をもらう() // -> "リンゴムシャムシャ"
+assert 忍者.も "shuriken" を "home" に忘れる() == "不覚! shuriken を home に忘れたでござる"
 ```
