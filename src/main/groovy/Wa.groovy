@@ -26,7 +26,7 @@ class Wa {
 
 class Proxy {
 
-	def postpositions = 'は が の を に と から で や か まで だけ など も しか'.split(/\s/)
+	def postpositions = 'は が の を に と から で へ や か まで だけ など も しか'.split(/\s/)
 
 	def target
 	def arguments = []

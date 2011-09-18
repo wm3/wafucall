@@ -4,59 +4,54 @@ import jp.w3ch.wa.Wa
 
 class MethodCallTest extends Specification {
 
-	interface DoSomething {
+	interface Traveler {
 
-		void 何かする(o)
-		void 何かする(o1, o2)
+		void 移動する(o)
+		void 移動する(o1, o2)
 
-		interface Overloaded {
-			void 何かする()
-			void 何かする(o)
-		}
 	}
 
+	def someone = Mock(Traveler)
+	def あの人 = Wa.japanese(someone)
+
 	def "call multiple times"() {
-		def subject = Mock(DoSomething)
-		def 対象 = Wa.japanese(subject)
-		def o = new Object()
+		def アマゾン川 = new Object()
 
-		when: 対象.が o を何かする()
-		and:  対象.が o を何かする()
+		when: あの人.が アマゾン川 へ移動する()
+		and:  あの人.が アマゾン川 へ移動する()
 
-		then: 2 * subject.何かする(o)
+		then: 2 * someone.移動する(アマゾン川)
 	}
 
 	def "use an overloaded method"() {
-		def subject = Mock(DoSomething.Overloaded)
-		def 対象 = Wa.japanese(subject)
-		def o = new Object()
+		def 西海岸 = new Object(), カヤック = new Object()
 
-		when: 対象.は何かする()
-		and:  対象.が o を何かする()
+		when: あの人.は 西海岸 へ移動する()
+		and:  あの人.は 西海岸 へ カヤック で移動する()
 
-		then: 1 * subject.何かする()
-		and:  1 * subject.何かする(o)
+		then: 1 * someone.移動する(西海岸)
+		and:  1 * someone.移動する(西海岸, カヤック)
 	}
 
 	def "pass expressions as params"() {
-		def subject = Mock(DoSomething)
-		def 対象 = Wa.japanese(subject)
+		def 黄金の国 = new Object(), ダッシュ = new Object()
+		def 海 = [の向こう: 黄金の国]
 
-		when: 対象.が (1 + 2) を何かする()
-		and:  対象.が (1 + 2) で (3 + 4) を何かする()
+		when: あの人.が (海.の向こう) へ移動する()
+		and:  あの人.が (海.の向こう) へ ダッシュ で移動する()
 
-		then: 1 * subject.何かする(3)
-		and:  1 * subject.何かする(3, 7)
+		then: 1 * someone.移動する(黄金の国)
+		and:  1 * someone.移動する(黄金の国, ダッシュ)
 	}
 
 	def "pass expressions as params without parentheses"() {
-		def subject = Mock(DoSomething)
-		def 対象 = Wa.japanese(subject)
+		def スコップ = new Object(), こっち = new Object(), あっち = new Object()
+		def 地球 = [の反対側: あっち]
 
-		when: 対象.が (1 + 2) で 4 を何かする()
-		and:  対象.が 1 で (3 + 4) を何かする()
+		when: あの人.が スコップ で (地球.の反対側) へ移動する()
+		and:  あの人.が (地球.の反対側) から こっち へ移動する()
 
-		then: 1 * subject.何かする(3, 4)
-		and:  1 * subject.何かする(1, 7)
+		then: 1 * someone.移動する(スコップ, あっち)
+		and:  1 * someone.移動する(あっち, こっち)
 	}
 }
