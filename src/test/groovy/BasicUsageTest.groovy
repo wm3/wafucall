@@ -3,7 +3,7 @@ import spock.lang.*
 import jp.w3ch.wa.Wa
 
 class BasicUsageTest extends Specification {
-	static interface Hangry {
+	static interface Hungry {
 		def 食べる(食べ物)
 		def もらう(人, 食べ物)
 		def 我慢する()
@@ -11,7 +11,7 @@ class BasicUsageTest extends Specification {
 
 	def apple = new Object()
 	def someone = new Object()
-	def you = Mock(Hangry.class)
+	def you = Mock(Hungry.class)
 
 	def あなた = Wa.japanese(you)
 
